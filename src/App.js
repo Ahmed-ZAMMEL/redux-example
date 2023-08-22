@@ -1,20 +1,25 @@
-import { Fragment } from "react";
-import Counter from "./components/Counter";
-import Header from "./components/Header";
-import Auth from "./components/Auth";
-import UserProfile from "./components/UserProfile";
-import { useSelector } from "react-redux";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import HomePage from "./pages/Home";
+import ProductsPage from "./pages/Products";
+import RootLayout from "./pages/RootLayout";
+import ErrorPage from "./pages/Error";
+import ProductDetailPage from "./pages/ProductDetail";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: "products", element: <ProductsPage /> },
+      { path: "products/:productId", element: <ProductDetailPage /> },
+    ],
+  },
+]);
 
 function App() {
-  const isAuth = useSelector((state) => state.auth.isAuthenticated);
-  return (
-    <Fragment>
-      <Header />
-      {!isAuth && <Auth />}
-      {isAuth && <UserProfile />}
-      <Counter />
-    </Fragment>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
